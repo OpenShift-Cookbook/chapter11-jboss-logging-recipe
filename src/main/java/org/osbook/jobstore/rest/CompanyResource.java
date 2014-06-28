@@ -19,19 +19,24 @@ import javax.ws.rs.core.Response.Status;
 import org.osbook.jobstore.domain.Company;
 import org.osbook.jobstore.services.CompanyService;
 import org.osbook.jobstore.utils.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/companies")
 public class CompanyResource {
 
+	private Logger logger = LoggerFactory.getLogger(CompanyResource.class);
+	
 	@Inject
 	private CompanyService companyService;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewCompany(@Valid Company company) {
-		Company existingCompanyWithName = companyService.findByName(company
-				.getName());
+		logger.debug("inside createNewCompany().. creating new company {}" , company);
+		Company existingCompanyWithName = companyService.findByName(company.getName());
 		if (existingCompanyWithName != null) {
+			logger.debug("Company with name {} already exists : {}" , company.getName(), existingCompanyWithName);
 			return Response
 					.status(Status.NOT_ACCEPTABLE)
 					.entity(String.format(
@@ -39,13 +44,16 @@ public class CompanyResource {
 							company.getName())).build();
 		}
 		company = companyService.save(company);
+		logger.info("Created new company {}" , company);
 		return Response.status(Status.CREATED).entity(company).build();
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Company> showAll() {
-		return companyService.findAll();
+		List<Company> companies = companyService.findAll();
+		logger.info("Found {} companies" , companies.size());
+		return companies;
 	}
 
 	@Path("/{idOrName}")
