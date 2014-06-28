@@ -57,7 +57,7 @@
 	<profile>
 		<subsystem xmlns="urn:jboss:domain:logging:1.3">
 			<console-handler name="CONSOLE">
-				<level name="INFO"/>
+				<level name="DEBUG"/>
 				<formatter>
 					<pattern-formatter pattern="%d{yyyy/MM/dd HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n"/>
 				</formatter>
@@ -76,6 +76,9 @@
 			</logger>
 			<logger category="jacorb.config">
 				<level name="ERROR" />
+			</logger>
+			<logger category="org.osbook.jobstore">
+				<level name="DEBUG"></level>
 			</logger>
 			<root-logger>
 				<level name="INFO" />
