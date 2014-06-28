@@ -494,6 +494,9 @@
 			<virtual-server name="default-host"
 				enable-welcome-root="false">
 				<alias name="localhost" />
+				<access-log pattern="%a %t %H %p %U %s %S %T" rotate="true">
+					<directory path="app-root/logs/" relative-to="user.home"/>
+				</access-log>
 			</virtual-server>
 			<valve name="remoteipvalve" module="org.jboss.as.web" class-name="org.apache.catalina.valves.RemoteIpValve">
 		    	<param param-name="protocolHeader" param-value="x-forwarded-proto"/>
